@@ -12,14 +12,14 @@ import Footer from "components/Footer/Footer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
 import Button from "components/CustomButtons/Button.jsx";
 
-import analyserPageStyle from "assets/jss/material-kit-react/views/analyserPage.jsx";
+import AnalyzerPageStyle from "assets/jss/material-kit-react/views/analyzerPage.jsx";
 
 // Sections for this page
 import ProductSection from "./Sections/ProductSection.jsx";
 import UploadSection from "./Sections/UploadSection.jsx";
 import ResultsSection from "./Sections/ResultsSection.jsx";
 
-class AnalyserPage extends React.Component {
+class AnalyzerPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -40,7 +40,7 @@ class AnalyserPage extends React.Component {
       <div>
         <Header
           className={classNames(classes.header)}
-          brand="Instagram DM Analyser"
+          brand="Instagram DM Analyzer"
         />
         <div className={classNames(classes.main, classes.mainRaised)}>
           <div className={classes.container}>
@@ -62,4 +62,4 @@ class AnalyserPage extends React.Component {
   }
 }
 
-export default withStyles(analyserPageStyle)(AnalyserPage);
+export default withStyles(AnalyzerPageStyle)(AnalyzerPage);
