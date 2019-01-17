@@ -52,7 +52,7 @@ class ProductSection extends React.Component {
             <GridItem xs={12} sm={12} md={4}>
               <InfoArea
                 title="Secure"
-                description="Your upload is safe here. We do not keep a copy of your file, we simply read it as you give it to us. Refresh the page and it's like it ever happened."
+                description="Your upload is safe here. We do not keep a copy of your file, we simply read it as you give it to us. Refresh the page and it's like it never happened."
                 icon={VerifiedUser}
                 iconColor="success"
                 vertical

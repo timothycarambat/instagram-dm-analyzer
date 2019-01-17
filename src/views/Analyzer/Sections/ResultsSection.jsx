@@ -15,6 +15,8 @@ import PlayCircleFilled from "@material-ui/icons/PlayCircleFilled";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
 import InfoArea from "components/InfoArea/InfoArea.jsx";
+import Clearfix from "components/Clearfix/Clearfix.jsx";
+
 
 import workStyle from "assets/jss/material-kit-react/views/landingPageSections/workStyle.jsx";
 
@@ -119,6 +121,43 @@ class ResultsSection extends React.Component {
     })
   }
 
+  dailyFrequencyCount = () => {
+    const data = this.props.data
+    var chartData = []
+    var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
+    var labels = []
+    var dataPoints = []
+
+    days.map((day) => chartData.push({
+        name: day,
+        count: 0
+    }))
+
+    data.map((record) => {
+      record.conversation.map((convo) => {
+        let createdAt = new Date(convo.created_at)
+        let day = createdAt.getDay()
+        chartData[day].count = chartData[day].count + 1
+      })
+    })
+
+    chartData.map((day) => labels.push(day.name))
+    chartData.map((day) => dataPoints.push(day.count))
+
+    return({
+      labels: labels,
+    	datasets: [
+    		{
+    			label: "Day Frequency of Messages",
+    			backgroundColor: "rgba(89,125,255,0.2)",
+    			borderColor: "rgba(16,49,168,1)",
+    			pointBackgroundColor: "rgba(0,0,0,1)",
+    			data: dataPoints
+    		}
+    	]
+    })
+  }
+
   lineChartOptions = () => {
     return(
     	{scaleShowGridLines : true,
@@ -168,6 +207,50 @@ class ResultsSection extends React.Component {
     })
   }
 
+  getMostPopularWords = () => {
+    const data = this.props.data
+    var wordlist = []
+    var topWrdCount = {}
+    var topFiveWords = []
+    var results = [];
+
+    data.map((record) => {
+      record.conversation.map((convo) => {
+        if (!convo.text){return}
+        let text = convo.text.toLowerCase()
+        text = text.replace(/[^a-zA-Z -]/g, '')
+        let textArray = text.split(' ')
+        wordlist = wordlist.concat(textArray)
+      })
+    })
+
+    wordlist.map((word) => {
+        topWrdCount[word] = topWrdCount[word] !== undefined ? topWrdCount[word]+1 : 0
+    })
+    topFiveWords = Object.keys(topWrdCount).sort(function(a,b){return topWrdCount[b]-topWrdCount[a]}).slice(0,5)
+    results = topFiveWords.map((word) => results[word] = topWrdCount[word])
+
+    return({
+      labels: topFiveWords,
+      datasets: [{
+        data: results,
+        backgroundColor: [
+        '#FF6384',
+        '#36A2EB',
+        '#FFCE56',
+        '#439889',
+        '#ff5bff'
+        ],
+        hoverBackgroundColor: [
+        '#FF6384',
+        '#36A2EB',
+        '#FFCE56',
+        '#003d33',
+        '#9e00c5'
+        ]
+      }],
+    })
+  }
 
   render() {
     const { classes } = this.props;
@@ -230,11 +313,45 @@ class ResultsSection extends React.Component {
             <Doughnut
               data={this.makeSenderQtyData()}
               options={{
+                title: {
+                  display: true,
+                  text: "Message Count by Sender"
+                },
                 legend: {
                   display: false
                 },
                 maintainAspectRatio: false,
                 responsive: true,
+              }}
+            />
+          </GridItem>
+        </GridContainer>
+
+        <hr style={{opacity: 0.3, margin: 10}} />
+
+        <GridContainer style={{height: 270}}>
+          <GridItem cs={6} sm={6} md={6}>
+            <Doughnut
+              data={this.getMostPopularWords()}
+              options={{
+                title: {
+                  display: true,
+                  text: "Top Five Most Popular Words"
+                },
+                legend: {
+                  display: false
+                },
+                maintainAspectRatio: false,
+                responsive: true,
+              }}
+            />
+          </GridItem>
+
+          <GridItem cs={6} sm={6} md={6}>
+            <Line
+              data={this.dailyFrequencyCount()}
+              options={{
+                maintainAspectRatio: true
               }}
             />
           </GridItem>

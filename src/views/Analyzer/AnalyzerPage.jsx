@@ -19,11 +19,16 @@ import ProductSection from "./Sections/ProductSection.jsx";
 import UploadSection from "./Sections/UploadSection.jsx";
 import ResultsSection from "./Sections/ResultsSection.jsx";
 
+//if developing and need sample data so you dont have to upload a file
+// set sampleData() as the fileData in the state of this view
+// import sampleData from "components/SampleData.jsx";
+
 class AnalyzerPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       fileData: null,
+      // fileData: sampleData(),
     };
   }
 
